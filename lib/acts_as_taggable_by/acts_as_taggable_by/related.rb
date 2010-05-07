@@ -44,7 +44,7 @@ module ActsAsTaggableBy::Taggable
         
         klass.scoped({ :select     => "#{klass.table_name}.*, COUNT(#{ActsAsTaggableBy::Tag.table_name}.id) AS count",
                        :from       => "#{klass.table_name}, #{ActsAsTaggableBy::Tag.table_name}, #{ActsAsTaggableBy::Tagging.table_name}",
-                       :conditions => ["#{exclude_self} #{klass.table_name}.id = #{ActsAsTaggableBy::Tagging.table_name}.taggable_id AND #{ActsAsTaggableBy::Tagging.table_name}.taggable_type = '#{klass.to_s}' AND #{ActsAsTaggableBy::Tagging.table_name}.tag_id = #{ActsAsTaggableBy::Tag.table_name}.id AND #{ActsAsTaggableBy::Tag.table_name}.name IN (?) AND #{ActsAsTaggableBy::Tagging.table_name}.context = ?", tags_to_find, result_context],
+                       :conditions => ["#{exclude_self} #{klass.table_name}.id = #{ActsAsTaggableBy::Tagging.table_name}.taggable_id AND #{ActsAsTaggableBy::Tagging.table_name}.taggable_type = '#{klass.to_s}' AND #{ActsAsTaggableBy::Tagging.table_name}.tag_id = #{ActsAsTaggableBy::Tag.table_name}.id AND #{ActsAsTaggableBy::Tag.table_name}.name IN (?) AND #{ActsAsTaggableBy::Tag.table_name}.context = ?", tags_to_find, result_context],
                        :group      => grouped_column_names_for(klass),
                        :order      => "count DESC" }.update(options))
       end

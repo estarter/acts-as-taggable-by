@@ -21,7 +21,7 @@ module ActsAsTaggableBy::Taggable
 
           class_eval do
             has_many context_taggings, :as => :taggable, :dependent => :destroy, :include => :tag, :class_name => "ActsAsTaggableBy::Tagging",
-                     :conditions => ["#{ActsAsTaggableBy::Tagging.table_name}.tagger_id IS NULL AND #{ActsAsTaggableBy::Tagging.table_name}.context = ?", tags_type]
+                     :conditions => ["#{ActsAsTaggableBy::Tag.table_name}.tagger_id IS NULL AND #{ActsAsTaggableBy::Tag.table_name}.context = ?", tags_type]
             has_many context_tags, :through => context_taggings, :source => :tag, :class_name => "ActsAsTaggableBy::Tag"
           end
 
@@ -172,14 +172,14 @@ module ActsAsTaggableBy::Taggable
       ##
       # Returns all tags of a given context
       def all_tags_on(context)
-        opts =  ["#{ActsAsTaggableBy::Tagging.table_name}.context = ?", context.to_s]
+        opts =  ["#{ActsAsTaggableBy::Tag.table_name}.context = ?", context.to_s]
         base_tags.where(opts).order("#{ActsAsTaggableBy::Tagging.table_name}.created_at").group("#{ActsAsTaggableBy::Tagging.table_name}.tag_id").all
       end
 
       ##
       # Returns all tags that are not owned of a given context
       def tags_on(context)
-        base_tags.where(["#{ActsAsTaggableBy::Tagging.table_name}.context = ? AND #{ActsAsTaggableBy::Tagging.table_name}.tagger_id IS NULL", context.to_s]).all
+        base_tags.where(["#{ActsAsTaggableBy::Tag.table_name}.context = ? AND #{ActsAsTaggableBy::Tag.table_name}.tagger_id IS NULL", context.to_s]).all
       end
 
       def set_tag_list_on(context, new_list)
@@ -209,15 +209,15 @@ module ActsAsTaggableBy::Taggable
           tag_list = tag_list_cache_on(context).uniq
 
           # Find existing tags or create non-existing tags:
-          tag_list = ActsAsTaggableBy::Tag.find_or_create_all_with_like_by_name(tag_list)
+          tag_list = ActsAsTaggableBy::Tag.find_or_create_all_with_like_by_name(tag_list, context, nil)
 
           current_tags = tags_on(context)
           old_tags     = current_tags - tag_list
           new_tags     = tag_list     - current_tags
           
           # Find taggings to remove:
-          old_taggings = taggings.where(:tagger_type => nil, :tagger_id => nil,
-                                        :context => context.to_s, :tag_id => old_tags).all
+          old_taggings = taggings.where("#{ActsAsTaggableBy::Tag.table_name}.tagger_id" => nil, "#{ActsAsTaggableBy::Tag.table_name}.tagger_type" => nil,
+                                        "#{ActsAsTaggableBy::Tag.table_name}.context" => context.to_s, :tag_id => old_tags).all
 
           if old_taggings.present?
             # Destroy old taggings:
@@ -226,7 +226,7 @@ module ActsAsTaggableBy::Taggable
 
           # Create new taggings:
           new_tags.each do |tag|
-            taggings.create!(:tag_id => tag.id, :context => context.to_s, :taggable => self)
+            taggings.create!(:tag_id => tag.id, :taggable => self)
           end
         end
 

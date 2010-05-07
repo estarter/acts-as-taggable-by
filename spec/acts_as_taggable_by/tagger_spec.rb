@@ -17,7 +17,7 @@ describe "Tagger" do
     @user.owned_tags.size == 2
   end
   
-  it "should not overlap tags from different taggers" do
+  it "should overlap tags from different taggers" do
     @user2 = TaggableUser.new
     lambda{
       @user.tag(@taggable, :with => 'ruby, scheme', :on => :tags)
@@ -33,7 +33,7 @@ describe "Tagger" do
     @taggable.tags_from(@user2).sort.should == %w(java lisp python ruby).sort
     
     @taggable.all_tags_list.sort.should == %w(ruby scheme java python lisp).sort
-    @taggable.all_tags_on(:tags).size.should == 5
+    @taggable.all_tags_on(:tags).size.should == 6
   end
   
   it "should not lose tags from different taggers" do

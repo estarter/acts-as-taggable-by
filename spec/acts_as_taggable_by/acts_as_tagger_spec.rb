@@ -97,8 +97,8 @@ describe "acts_as_tagger" do
         @user_y.tag(@taggable, :with => '', :on => :tags)
       end
       
-      it "should delete owned tags" do        
-        @user_y.owned_tags.should == []
+      it "should not delete owned tags" do        
+        @user_y.owned_tags.should have(2).items
       end
       
       it "should not delete other taggers tags" do

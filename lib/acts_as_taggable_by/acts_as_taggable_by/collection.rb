@@ -78,7 +78,7 @@ module ActsAsTaggableBy::Taggable
         
         ## Generate joins:
         tagging_join  = "LEFT OUTER JOIN #{ActsAsTaggableBy::Tagging.table_name} ON #{ActsAsTaggableBy::Tag.table_name}.id = #{ActsAsTaggableBy::Tagging.table_name}.tag_id"
-        tagging_join << sanitize_sql([" AND #{ActsAsTaggableBy::Tagging.table_name}.context = ?", options.delete(:on).to_s]) if options[:on]
+        tagging_join << sanitize_sql([" AND #{ActsAsTaggableBy::Tag.table_name}.context = ?", options.delete(:on).to_s]) if options[:on]
 
         taggable_join = "INNER JOIN #{table_name} ON #{table_name}.#{primary_key} = #{ActsAsTaggableBy::Tagging.table_name}.taggable_id"
         taggable_join << " AND #{table_name}.#{inheritance_column} = '#{name}'" unless descends_from_active_record? # Current model is STI descendant, so add type checking to the join condition      

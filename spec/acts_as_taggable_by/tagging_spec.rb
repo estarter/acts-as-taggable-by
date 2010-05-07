@@ -8,8 +8,7 @@ describe ActsAsTaggableBy::Tagging do
 
   it "should not be valid with a invalid tag" do
     @tagging.taggable = TaggableModel.create(:name => "Bob Jones")
-    @tagging.tag = ActsAsTaggableBy::Tag.new(:name => "")
-    @tagging.context = "tags"
+    @tagging.tag = ActsAsTaggableBy::Tag.new(:name => "", :context => "tags")
 
     @tagging.should_not be_valid
     
@@ -22,10 +21,10 @@ describe ActsAsTaggableBy::Tagging do
 
   it "should not create duplicate taggings" do
     @taggable = TaggableModel.create(:name => "Bob Jones")
-    @tag = ActsAsTaggableBy::Tag.create(:name => "awesome")
+    @tag = ActsAsTaggableBy::Tag.create(:name => "awesome", :context => 'tags')
 
     lambda {
-      2.times { ActsAsTaggableBy::Tagging.create(:taggable => @taggable, :tag => @tag, :context => 'tags') }
+      2.times { ActsAsTaggableBy::Tagging.create(:taggable => @taggable, :tag => @tag) }
     }.should change(ActsAsTaggableBy::Tagging, :count).by(1)
   end
 end
