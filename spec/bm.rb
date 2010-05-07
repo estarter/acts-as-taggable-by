@@ -41,9 +41,9 @@ ActiveRecord::Base.silence do
 
   class TaggableModel < ActiveRecord::Base
     acts_as_taggable
-    acts_as_taggable_on :languages
-    acts_as_taggable_on :skills
-    acts_as_taggable_on :needs, :offerings
+    acts_as_taggable_by :languages
+    acts_as_taggable_by :skills
+    acts_as_taggable_by :needs, :offerings
   end
 end
 

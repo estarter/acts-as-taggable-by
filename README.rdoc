@@ -1,4 +1,4 @@
-= ActsAsTaggableOn
+= ActsAsTaggableBy
 
 This plugin was originally based on Acts as Taggable on Steroids by Jonathan Viney.
 It has evolved substantially since that point, but all credit goes to him for the
@@ -35,7 +35,7 @@ After that, you can run "rake gems:install" to install the gem if you don't alre
 
 ==== Post Installation
 
-1. script/generate acts_as_taggable_on_migration
+1. script/generate acts_as_taggable_by_migration
 2. rake db:migrate
 
 === Rails 3.0
@@ -49,7 +49,7 @@ To use it, add it to your Gemfile:
 
 ==== Post Installation
 
-1. rails generate acts_as_taggable_on:migration
+1. rails generate acts_as_taggable_by:migration
 2. rake db:migrate
 
 == Testing
@@ -71,9 +71,9 @@ rake spec:plugins
 == Usage
 
     class User < ActiveRecord::Base
-      # Alias for <tt>acts_as_taggable_on :tags</tt>:
+      # Alias for <tt>acts_as_taggable_by :tags</tt>:
       acts_as_taggable
-      acts_as_taggable_on :skills, :interests
+      acts_as_taggable_by :skills, :interests
     end
 
     @user = User.new(:name => "Bobby")
@@ -96,7 +96,7 @@ This way you can mix and match to filter down your results, and it also improves
 compatibility with the will_paginate gem:
 
     class User < ActiveRecord::Base
-      acts_as_taggable_on :tags
+      acts_as_taggable_by :tags
       named_scope :by_join_date, :order => "created_at DESC"
     end
 
@@ -150,7 +150,7 @@ Tags can have owners:
     end
 
     class Photo < ActiveRecord::Base
-      acts_as_taggable_on :locations
+      acts_as_taggable_by :locations
     end
 
     @some_user.tag(@some_photo, :with => "paris, normandy", :on => :locations)
@@ -161,7 +161,7 @@ Tags can have owners:
 === Tag cloud calculations
 
 To construct tag clouds, the frequency of each tag needs to be calculated.
-Because we specified +acts_as_taggable_on+ on the <tt>User</tt> class, we can
+Because we specified +acts_as_taggable_by+ on the <tt>User</tt> class, we can
 get a calculation of all the tag counts by using <tt>User.tag_counts_on(:customs)</tt>. But what if we wanted a tag count for
 an single user's posts? To achieve this we call tag_counts on the association:
 
@@ -174,7 +174,7 @@ Here is an example that generates a tag cloud.
 Helper:
 
   module PostsHelper
-    include ActsAsTaggableOn::TagsHelper
+    include ActsAsTaggableBy::TagsHelper
   end
 
 Controller:

@@ -1,8 +1,8 @@
 class TaggableModel < ActiveRecord::Base
   acts_as_taggable
-  acts_as_taggable_on :languages
-  acts_as_taggable_on :skills
-  acts_as_taggable_on :needs, :offerings
+  acts_as_taggable_by :languages
+  acts_as_taggable_by :skills
+  acts_as_taggable_by :needs, :offerings
   has_many :untaggable_models
 end
 
@@ -11,15 +11,15 @@ class CachedModel < ActiveRecord::Base
 end
 
 class OtherTaggableModel < ActiveRecord::Base
-  acts_as_taggable_on :tags, :languages
-  acts_as_taggable_on :needs, :offerings
+  acts_as_taggable_by :tags, :languages
+  acts_as_taggable_by :needs, :offerings
 end
 
 class InheritingTaggableModel < TaggableModel
 end
 
 class AlteredInheritingTaggableModel < TaggableModel
-  acts_as_taggable_on :parts
+  acts_as_taggable_by :parts
 end
 
 class TaggableUser < ActiveRecord::Base

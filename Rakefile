@@ -36,7 +36,7 @@ end
 
 namespace 'rails2.3' do
   task :spec do
-    gemfile = File.join(File.dirname(__FILE__), 'lib', 'acts_as_taggable_on', 'compatibility', 'Gemfile')
+    gemfile = File.join(File.dirname(__FILE__), 'lib', 'acts_as_taggable_by', 'compatibility', 'Gemfile')
     ENV['BUNDLE_GEMFILE'] = gemfile
     Rake::Task['spec'].invoke    
   end
@@ -46,8 +46,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "acts-as-taggable-on"
-    gemspec.summary = "ActsAsTaggableOn is a tagging plugin for Rails that provides multiple tagging contexts on a single model."
-    gemspec.description = "With ActsAsTaggableOn, you could tag a single model on several contexts, such as skills, interests, and awards. It also provides other advanced functionality."
+    gemspec.summary = "ActsAsTaggableBy is a tagging plugin for Rails that provides multiple tagging contexts on a single model."
+    gemspec.description = "With ActsAsTaggableBy, you could tag a single model on several contexts, such as skills, interests, and awards. It also provides other advanced functionality."
     gemspec.email = "michael@intridea.com"
     gemspec.homepage = "http://github.com/mbleigh/acts-as-taggable-on"
     gemspec.authors = ["Michael Bleigh"]
