@@ -1,60 +1,31 @@
 = ActsAsTaggableBy
 
-This plugin was originally based on Acts as Taggable on Steroids by Jonathan Viney.
-It has evolved substantially since that point, but all credit goes to him for the
-initial tagging functionality that so many people have used.
-
-For instance, in a social network, a user might have tags that are called skills,
-interests, sports, and more. There is no real way to differentiate between tags and
-so an implementation of this type is not possible with acts as taggable on steroids.
-
-Enter Acts as Taggable On. Rather than tying functionality to a specific keyword
-(namely "tags"), acts as taggable on allows you to specify an arbitrary number of
-tag "contexts" that can be used locally or in combination in the same way steroids
-was used.
+This plugin was based on acts-on-taggable-on, but make tagging model oriented
+to tags, not taggings. So every tag depend on user (tagger) and context. It helps
+to keep one user's tags independent from another user, allows such operation as
+tag renaming and keeping tag list with no tag-object relations.
 
 == Installation
 
 === Rails 2.3.x
 
-Acts As Taggable On is tested to work in Rails 2.3.5. 
+Acts As Taggable By is tested to work in Rails 2.3.5.
 
 ==== Plugin
 
-Acts As Taggable On is available both as a gem and as a traditional plugin. For the
+Acts As Taggable By is available both as a gem and as a traditional plugin. For the
 traditional plugin you can install like so:
 
-  script/plugin install git://github.com/mbleigh/acts-as-taggable-on.git
-
-Acts As Taggable On is also available as a gem plugin using Rails 2.1's gem dependencies.
-To install the gem, add this to your config/environment.rb:
-  
-  config.gem "acts-as-taggable-on", :source => "http://gemcutter.org", :version => '2.0.0.rc1'
-  
-After that, you can run "rake gems:install" to install the gem if you don't already have it.
+  script/plugin install git://github.com/estarter/acts-as-taggable-by.git
 
 ==== Post Installation
 
 1. script/generate acts_as_taggable_by_migration
 2. rake db:migrate
 
-=== Rails 3.0
-
-Acts As Taggable On is now useable in Rails 3.0, thanks to the excellent work of Szymon Nowak
-and Jelle Vandebeeck.
-
-To use it, add it to your Gemfile:
-  
-  gem 'acts-as-taggable-on'
-
-==== Post Installation
-
-1. rails generate acts_as_taggable_by:migration
-2. rake db:migrate
-
 == Testing
 
-Acts As Taggable On uses RSpec for its test coverage. Inside the plugin
+Acts As Taggable By uses RSpec for its test coverage. Inside the plugin
 directory, you can run the specs for RoR 3.0.0 with:
 
   rake spec
@@ -91,7 +62,7 @@ rake spec:plugins
 
 === Finding Tagged Objects
 
-Acts As Taggable On utilizes named_scopes to create an association for tags.
+Acts As Taggable By utilizes named_scopes to create an association for tags.
 This way you can mix and match to filter down your results, and it also improves
 compatibility with the will_paginate gem:
 
