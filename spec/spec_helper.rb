@@ -17,7 +17,7 @@ rescue Bundler::GemNotFound
 end
 
 Bundler.require
-require File.expand_path('../../lib/acts-as-taggable-on', __FILE__)
+require File.expand_path('../../lib/acts-as-taggable-by', __FILE__)
 
 unless [].respond_to?(:freq)
   class Array

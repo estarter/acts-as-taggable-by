@@ -1,6 +1,6 @@
 require 'active_record'
 require 'action_view'
-require File.expand_path('../../lib/acts-as-taggable-on', __FILE__)
+require File.expand_path('../../lib/acts-as-taggable-by', __FILE__)
 
 if defined?(ActiveRecord::Acts::TaggableOn)
   ActiveRecord::Base.send :include, ActiveRecord::Acts::TaggableOn

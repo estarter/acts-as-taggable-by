@@ -1,1 +1,1 @@
-require 'acts-as-taggable-on'
+require 'acts-as-taggable-by'

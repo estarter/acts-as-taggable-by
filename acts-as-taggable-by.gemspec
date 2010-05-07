@@ -4,7 +4,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{acts-as-taggable-on}
+  s.name = %q{acts-as-taggable-by}
   s.version = "2.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "generators/acts_as_taggable_by_migration/acts_as_taggable_by_migration_generator.rb",
      "generators/acts_as_taggable_by_migration/templates/migration.rb",
-     "lib/acts-as-taggable-on.rb",
+     "lib/acts-as-taggable-by.rb",
      "lib/acts_as_taggable_by/acts_as_taggable_by.rb",
      "lib/acts_as_taggable_by/acts_as_taggable_by/cache.rb",
      "lib/acts_as_taggable_by/acts_as_taggable_by/collection.rb",
@@ -54,7 +54,7 @@ Gem::Specification.new do |s|
      "spec/schema.rb",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/mbleigh/acts-as-taggable-on}
+  s.homepage = %q{http://github.com/mbleigh/acts-as-taggable-by}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}

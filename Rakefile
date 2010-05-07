@@ -45,11 +45,11 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "acts-as-taggable-on"
+    gemspec.name = "acts-as-taggable-by"
     gemspec.summary = "ActsAsTaggableBy is a tagging plugin for Rails that provides multiple tagging contexts on a single model."
     gemspec.description = "With ActsAsTaggableBy, you could tag a single model on several contexts, such as skills, interests, and awards. It also provides other advanced functionality."
     gemspec.email = "michael@intridea.com"
-    gemspec.homepage = "http://github.com/mbleigh/acts-as-taggable-on"
+    gemspec.homepage = "http://github.com/mbleigh/acts-as-taggable-by"
     gemspec.authors = ["Michael Bleigh"]
     gemspec.files =  FileList["[A-Z]*", "{generators,lib,spec,rails}/**/*"] - FileList["**/*.log"]
   end
