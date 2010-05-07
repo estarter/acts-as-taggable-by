@@ -2,16 +2,22 @@ module ActsAsTaggableBy
   class Tag < ::ActiveRecord::Base
     include ActsAsTaggableBy::ActiveRecord::Backports if ::ActiveRecord::VERSION::MAJOR < 3
   
-    attr_accessible :name
+    attr_accessible :name,
+                    :context,
+                    :tagger,
+                    :tagger_type,
+                    :tagger_id
 
     ### ASSOCIATIONS:
 
+    belongs_to :tagger,   :polymorphic => true
     has_many :taggings, :dependent => :destroy, :class_name => 'ActsAsTaggableBy::Tagging'
 
     ### VALIDATIONS:
 
     validates_presence_of :name
-    validates_uniqueness_of :name
+    validates_uniqueness_of :name, :scope => [:tagger_id, :tagger_type, :context]
+    validates_presence_of :context
 
     ### SCOPES:
 

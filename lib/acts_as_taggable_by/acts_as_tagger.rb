@@ -15,9 +15,8 @@ module ActsAsTaggableBy
       #   end
       def acts_as_tagger(opts={})
         class_eval do
-          has_many :owned_taggings, opts.merge(:as => :tagger, :dependent => :destroy,
-                                               :include => :tag, :class_name => "ActsAsTaggableBy::Tagging")
-          has_many :owned_tags, :through => :owned_taggings, :source => :tag, :uniq => true, :class_name => "ActsAsTaggableBy::Tag"
+          has_many :owned_tags, :as => :tagger, :dependent => :destroy, :class_name => "ActsAsTaggableBy::Tag"
+          has_many :owned_taggings, :through => :owned_tags, :source => :taggings, :class_name => "ActsAsTaggableBy::Tagging"
         end
 
         include ActsAsTaggableBy::Tagger::InstanceMethods
