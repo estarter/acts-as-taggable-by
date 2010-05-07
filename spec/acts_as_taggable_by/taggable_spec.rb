@@ -141,6 +141,10 @@ describe "Taggable" do
     frank = TaggableModel.create(:name => "Frank", :tag_list => "ruby, rails")
     charlie = TaggableModel.create(:name => "Charlie", :skill_list => "ruby")
 
+puts ActsAsTaggableBy::Tag.all.inspect
+puts ActsAsTaggableBy::Tagging.all.inspect
+puts TaggableModel.tagged_with("ruby").inspect
+
     TaggableModel.tagged_with("ruby").all_tag_counts.first.count.should == 3 # ruby
   end
 
@@ -258,7 +262,7 @@ describe "Taggable" do
 
   describe "grouped_column_names_for method" do
     it "should return all column names joined for Tag GROUP clause" do
-      @taggable.grouped_column_names_for(ActsAsTaggableBy::Tag).should == "tags.id, tags.name"
+      @taggable.grouped_column_names_for(ActsAsTaggableBy::Tag).should == "tags.id, tags.name, tags.context, tags.tagger_id, tags.tagger_type, tags.created_at, tags.updated_at"
     end
 
     it "should return all column names joined for TaggableModel GROUP clause" do

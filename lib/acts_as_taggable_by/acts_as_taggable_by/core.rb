@@ -67,6 +67,7 @@ module ActsAsTaggableBy::Taggable
       #   User.tagged_with("awesome", "cool", :match_all => true) # Users that are tagged with just awesome and cool
       def tagged_with(tags, options = {})
         tag_list = ActsAsTaggableBy::TagList.from(tags)
+puts "tag list #{tag_list.inspect}"
 
         return {} if tag_list.empty?
 
@@ -84,11 +85,11 @@ module ActsAsTaggableBy::Taggable
           conditions << "#{table_name}.#{primary_key} IN (SELECT #{ActsAsTaggableBy::Tagging.table_name}.taggable_id FROM #{ActsAsTaggableBy::Tagging.table_name} JOIN #{ActsAsTaggableBy::Tag.table_name} ON #{ActsAsTaggableBy::Tagging.table_name}.tag_id = #{ActsAsTaggableBy::Tag.table_name}.id AND (#{tags_conditions}) WHERE #{ActsAsTaggableBy::Tagging.table_name}.taggable_type = #{quote_value(base_class.name)})"
 
         else
-          tags = ActsAsTaggableBy::Tag.named_any(tag_list)
-          return scoped(:conditions => "1 = 0") unless tags.length == tag_list.length
+          tags = ActsAsTaggableBy::Tag.named_any(tag_list, context.to_s, nil)
+          return scoped(:conditions => "1 = 0") if tags.empty?
 
-          tags.each do |tag|
-            safe_tag = tag.name.gsub(/[^a-zA-Z0-9]/, '')
+          tags.group_by{|t| t.name}.values.each do |tags|
+            safe_tag = tags.first.name.gsub(/[^a-zA-Z0-9]/, '')
             prefix   = "#{safe_tag}_#{rand(1024)}"
 
             taggings_alias = "#{table_name}_taggings_#{prefix}"
@@ -96,8 +97,7 @@ module ActsAsTaggableBy::Taggable
             tagging_join  = "JOIN #{ActsAsTaggableBy::Tagging.table_name} #{taggings_alias}" +
                             "  ON #{taggings_alias}.taggable_id = #{table_name}.#{primary_key}" +
                             " AND #{taggings_alias}.taggable_type = #{quote_value(base_class.name)}" +
-                            " AND #{taggings_alias}.tag_id = #{tag.id}"
-            tagging_join << " AND " + sanitize_sql(["#{taggings_alias}.context = ?", context.to_s]) if context
+                            " AND #{taggings_alias}.tag_id IN (#{tags.map(&:id).join(",")})"
 
             joins << tagging_join
           end
@@ -113,7 +113,7 @@ module ActsAsTaggableBy::Taggable
           group = "#{grouped_column_names_for(self)} HAVING COUNT(#{taggings_alias}.taggable_id) = #{tags.size}"
         end
 
-
+puts "tagged_with joins '#{joins.join(" ")}' conditions '#{conditions.join(" AND ")}' group '#{group}'"
         scoped(:joins      => joins.join(" "),
                :group      => group,
                :conditions => conditions.join(" AND "),

@@ -96,7 +96,9 @@ module ActsAsTaggableBy::Taggable
         # Joins and conditions
         joins.each      { |join|      scope = scope.joins(join)      }
         conditions.each { |condition| scope = scope.where(condition) }
-        
+
+puts "JOINS #{joins.inspect}"        
+puts "CONDITIONS #{conditions.inspect}"
         # GROUP BY and HAVING clauses:
         at_least  = sanitize_sql(['COUNT(*) >= ?', options.delete(:at_least)]) if options[:at_least]
         at_most   = sanitize_sql(['COUNT(*) <= ?', options.delete(:at_most)]) if options[:at_most]
@@ -106,6 +108,7 @@ module ActsAsTaggableBy::Taggable
           # Append the current scope to the scope, because we can't use scope(:find) in RoR 3.0 anymore:
           scoped_select = "#{table_name}.#{primary_key}"
           scope = scope.where("#{ActsAsTaggableBy::Tagging.table_name}.taggable_id IN(#{select(scoped_select).to_sql})")
+          puts "#{ActsAsTaggableBy::Tagging.table_name}.taggable_id IN(#{select(scoped_select).to_sql})"
           
           # We have having() in RoR 3.0 so use it:
           having = having.blank? ? "COUNT(*) > 0" : "COUNT(*) > 0 AND #{having}"
