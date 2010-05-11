@@ -84,7 +84,7 @@ module ActsAsTaggableBy::Taggable
           conditions << "#{table_name}.#{primary_key} IN (SELECT #{ActsAsTaggableBy::Tagging.table_name}.taggable_id FROM #{ActsAsTaggableBy::Tagging.table_name} JOIN #{ActsAsTaggableBy::Tag.table_name} ON #{ActsAsTaggableBy::Tagging.table_name}.tag_id = #{ActsAsTaggableBy::Tag.table_name}.id AND (#{tags_conditions}) WHERE #{ActsAsTaggableBy::Tagging.table_name}.taggable_type = #{quote_value(base_class.name)})"
 
         else
-          tags = ActsAsTaggableBy::Tag.named_any(tag_list)
+          tags = ActsAsTaggableBy::Tag.named_any(tag_list, context, nil)
           return scoped(:conditions => "1 = 0") unless tags.length == tag_list.length
 
           tags.each do |tag|
@@ -97,7 +97,6 @@ module ActsAsTaggableBy::Taggable
                             "  ON #{taggings_alias}.taggable_id = #{table_name}.#{primary_key}" +
                             " AND #{taggings_alias}.taggable_type = #{quote_value(base_class.name)}" +
                             " AND #{taggings_alias}.tag_id = #{tag.id}"
-            tagging_join << " AND " + sanitize_sql(["#{taggings_alias}.context = ?", context.to_s]) if context
 
             joins << tagging_join
           end

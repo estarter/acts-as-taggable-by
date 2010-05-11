@@ -28,8 +28,11 @@ module ActsAsTaggableBy
     def self.named_any(list, context, tagger)
       conditions = "("
       conditions << list.map{ |tag| sanitize_sql(["name LIKE ?", tag.to_s]) }.join(" OR ")
-      conditions << ") AND "
-      conditions << sanitize_sql(["context = ?", context.to_s])
+      conditions << ")"
+      if context.present?
+        conditions << " AND "
+        conditions << sanitize_sql(["context = ?", context.to_s])
+      end
       if tagger.present? && tagger.id.present?
         conditions << " AND tagger_id = #{tagger.id} AND tagger_type = '#{tagger.class.to_s}'"
       else
