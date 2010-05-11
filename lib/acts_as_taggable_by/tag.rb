@@ -69,7 +69,7 @@ module ActsAsTaggableBy
     ### INSTANCE METHODS:
 
     def ==(object)
-      super || (object.is_a?(Tag) && name == object.name)
+      super || (object.is_a?(Tag) && name == object.name && tagger == object.tagger && context == object.context)
     end
 
     def to_s
